@@ -22,7 +22,7 @@ if exist "%temp%\getadmin.vbs" ( del "%temp%\getadmin.vbs" )
 
 :: 设置初始变量
 
-
+:: 检查gfw
 set BinPing=c:\windows\system32\ping.exe
 %BinPing% -n 2 www.google.com>nul
 if %errorlevel%==0 (
