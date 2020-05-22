@@ -36,6 +36,8 @@ if %errorlevel%==0 (
 :: 创建工作目录
 md "C:\workspace"
 md "C:\workspace\Downloads"
+md "C:\workspace\bin"
+setx path "%path%;C:\workspace\bin;"
 set DirWork=C:\workspace
 set DirDownload=C:\workspace\Downloads
 set Save=%DirDownload%
@@ -168,6 +170,38 @@ if not exist "C:\Program Files (x86)\BraveSoftware\Brave-Browser\Application\bra
     if not exist %DirDownload%\!DownTpName! ( DownloadFile.vbs "!DownTpUrl!" "%DirDownload%\!DownTpName!" )
 
     start /WAIT %DirDownload%\!DownTpName!
+) else (
+    echo "[check] %TpName% already installed"
+)
+
+:: install rclone
+set TpName=rclone
+echo "Checking %TpName%..."
+if not exist "C:\workspace\bin\rclone.exe" (
+    set DownTpUrl=%DownHost1%/rclone-v1.51.0-windows-amd64.zip
+    for %%a in ("!DownTpUrl!") do set "DownTpName=%%~nxa"
+    if not exist %DirDownload%\!DownTpName! ( DownloadFile.vbs "!DownTpUrl!" "%DirDownload%\!DownTpName!" )
+
+    %BIN_RAR% x "%DirDownload%\!DownTpName!" C:\workspace\soft\
+    copy C:\workspace\soft\rclone-v1.51.0-windows-amd64\rclone.exe C:\workspace\bin\
+
+) else (
+    echo "[check] %TpName% already installed"
+)
+
+
+:: install BaiduPCS
+set TpName=BaiduPCS
+echo "Checking %TpName%..."
+if not exist "C:\workspace\bin\BaiduPCS.exe" (
+    set DownTpUrl=%DownHost1%/BaiduPCS-Go-v3.6.2-windows-x64.zip
+    for %%a in ("!DownTpUrl!") do set "DownTpName=%%~nxa"
+    if not exist %DirDownload%\!DownTpName! ( DownloadFile.vbs "!DownTpUrl!" "%DirDownload%\!DownTpName!" )
+
+    rem "C:\Program Files\WinRAR\WinRAR.exe" x "C:\workspace\Downloads\BaiduPCS-Go-v3.6.2-windows-x64.zip" C:\workspace\soft\
+    %BIN_RAR% x "%DirDownload%\!DownTpName!" C:\workspace\soft\
+    copy C:\workspace\soft\BaiduPCS-Go-v3.6.2-windows-x64\BaiduPCS-Go.exe C:\workspace\bin\
+
 ) else (
     echo "[check] %TpName% already installed"
 )
