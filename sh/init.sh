@@ -55,6 +55,7 @@ InstallZsh()
 
 InstallBt()
 {
+    # bt实验性py3安装： curl -sSO http://download.bt.cn/install/install_panel.sh && bash install_panel.sh
     if [ "${PM}" == "yum" ] || [ "${PM}" == "dnf" ] ; then
         # Pack="zsh"
         # ${PM} install ${Pack} -y
