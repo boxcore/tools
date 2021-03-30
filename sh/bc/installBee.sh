@@ -139,6 +139,7 @@ InstallBeeClef()
         fi
     fi
 }
+InstallBeeClef
 
 InstallBee()
 {
