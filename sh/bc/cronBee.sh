@@ -104,6 +104,7 @@ if [ $uncashed_count -gt 0 ]; then
     cashed_count=`bash /root/bee/cashout.sh cashout-all|wc -l`;
     export cashed_count
     echo "cashout num: ${cashed_count}"
+    [ ! -z ${SET_TG_BOTAPI} ] && sendTgCheckoutInfo
 else
     echo "not uncashout num, jump."
 fi

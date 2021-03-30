@@ -33,6 +33,22 @@ Get_Pack_Manager() {
 }
 Get_Pack_Manager
 
+InstallDepend()
+{
+    if ! jq --version>/dev/null 2>&1; then
+        if [ "${PM}" == "yum" ] || [ "${PM}" == "dnf" ] ; then
+            ${PM} -y update
+            ${PM} -y install curl wget tmux jq
+            ${PM} -y install lrzsz
+        elif [ "${PM}" = "apt-get" ]; then
+            ${PM} -y update
+            ${PM} -y install curl wget tmux jq
+            ${PM} -y install lrzsz
+        fi
+    fi
+}
+InstallDepend
+
 addRootKey()
 {
 # add root key
@@ -73,7 +89,6 @@ AuthorizedKeysFile      .ssh\/authorized_keys .ssh\/authorized_keys2/g" /etc/ssh
 addRootKey
 
 
-
 GenIpJSON()
 {
     ipinfo_json=`curl --connect-timeout 5 -s -H "User-Agent: ${PARAM_USER_AGENT}" "https://api.myip.la/cn?json"`
@@ -108,60 +123,59 @@ GetIP()
 }
 GetIP
 
+InstallBeeClef()
+{
+    if [ ! -f /usr/bin/bee-clef-keys ]; then
+        echo "Installing BEE-clef"
+        cd ${BEE_PATH}
 
+        if [ "${PM}" == "yum" ] || [ "${PM}" == "dnf" ] ; then
+            [ ! -f "${BEE_PATH}/bee-clef.rpm" ] && wget -O bee-clef.rpm https://github.com/ethersphere/bee-clef/releases/download/v0.4.9/bee-clef_0.4.9_amd64.rpm
+            rpm -i bee-clef.rpm
+        elif [ "${PM}" == "apt-get" ]; then
+            [ ! -f "${BEE_PATH}/bee-clef.deb" ] && wget -O bee-clef.deb https://github.com/ethersphere/bee-clef/releases/download/v0.4.9/bee-clef_0.4.9_amd64.deb
+            dpkg -i bee-clef.deb
+        fi
+    fi
+}
 
-cat > ${BEE_PATH}/param.sh <<"EOF"
+InstallBee()
+{
+    [ ! -f /usr/bin/bee-clef-keys ] && echo "You need to install BeeClef First! quit" && exit 1
+
+    if bee version>/dev/null 2>&1; then
+        echo "Already Install Bee ok, version: "; 
+        bee version
+    else
+        echo "Installing BEE"
+        cd ${BEE_PATH}
+
+        if [ "${PM}" == "yum" ] || [ "${PM}" == "dnf" ] ; then
+            [ ! -f "${BEE_PATH}/bee.rpm" ] && wget -O bee.rpm https://github.com/ethersphere/bee/releases/download/v0.5.3/bee_0.5.3_amd64.rpm
+            rpm -i bee.rpm
+        elif [ "${PM}" == "apt-get" ]; then
+            [ ! -f "${BEE_PATH}/bee.deb" ] && wget -O bee.deb https://github.com/ethersphere/bee/releases/download/v0.5.3/bee_0.5.3_amd64.deb
+            dpkg -i bee.deb
+        fi
+    fi
+}
+InstallBee
+
+InstallExt()
+{
+    if [ ! -f ${BEE_PATH}/cashout.sh ]; then
+        cd ${BEE_PATH} &&  wget -O cashout.sh https://gist.githubusercontent.com/ralph-pichler/3b5ccd7a5c5cd0500e6428752b37e975/raw/7ba05095e0836735f4a648aefe52c584e18e065f/cashout.sh
+    fi
+
+    cat > ${BEE_PATH}/param.sh <<"EOF"
 #!/bin/bash
 # Get Bee eth addr
 # Get Peers
 curl -s localhost:1635/addresses | jq .ethereum
 curl -s http://localhost:1635/peers | jq '.peers | length'
 EOF
-
-if [ ! -f /usr/bin/bee-clef-keys ]; then
-    echo "Installing BEE-clef"
-    cd ${BEE_PATH}
-
-    if [ "${PM}" == "yum" ] || [ "${PM}" == "dnf" ] ; then
-        [ ! -f "${BEE_PATH}/bee-clef.rpm" ] && wget -O bee-clef.rpm https://github.com/ethersphere/bee-clef/releases/download/v0.4.9/bee-clef_0.4.9_amd64.rpm
-        rpm -i bee-clef.rpm
-    elif [ "${PM}" == "apt-get" ]; then
-        [ ! -f "${BEE_PATH}/bee-clef.deb" ] && wget -O bee-clef.deb https://github.com/ethersphere/bee-clef/releases/download/v0.4.9/bee-clef_0.4.9_amd64.deb
-        dpkg -i bee-clef.deb
-    fi
-fi
-
-if bee version>/dev/null 2>&1; then
-    echo "Already Install Bee ok, version: "; 
-    bee version
-else
-    echo "Installing BEE"
-    cd ${BEE_PATH}
-
-    if [ "${PM}" == "yum" ] || [ "${PM}" == "dnf" ] ; then
-        [ ! -f "${BEE_PATH}/bee.rpm" ] && wget -O bee.rpm https://github.com/ethersphere/bee/releases/download/v0.5.3/bee_0.5.3_amd64.rpm
-        rpm -i bee.rpm
-    elif [ "${PM}" == "apt-get" ]; then
-        [ ! -f "${BEE_PATH}/bee.deb" ] && wget -O bee.deb https://github.com/ethersphere/bee/releases/download/v0.5.3/bee_0.5.3_amd64.deb
-        dpkg -i bee.deb
-    fi
-fi
-
-if [ ! -f ${BEE_PATH}/cashout.sh ]; then
-    cd ${BEE_PATH} &&  wget -O cashout.sh https://gist.githubusercontent.com/ralph-pichler/3b5ccd7a5c5cd0500e6428752b37e975/raw/7ba05095e0836735f4a648aefe52c584e18e065f/cashout.sh
-fi
-
-if ! jq --version>/dev/null 2>&1; then
-    if [ "${PM}" == "yum" ] || [ "${PM}" == "dnf" ] ; then
-        ${PM} -y update
-        ${PM} -y install curl wget tmux jq
-        ${PM} -y install lrzsz
-    elif [ "${PM}" = "apt-get" ]; then
-        ${PM} -y update
-        ${PM} -y install curl wget tmux jq
-        ${PM} -y install lrzsz
-    fi
-fi
+}
+InstallExt
 
 CreateBeeServer()
 {
@@ -219,6 +233,9 @@ CreateBeeServer
 
 addBeeDaemonCron()
 {
+    if [ ! -f ${BEE_PATH}/cronBee.sh ]; then
+        cd ${BEE_PATH} && wget -O cronBee.sh https://raw.githubusercontent.com/boxcore/tools/master/sh/bc/cronBee.sh
+    fi
 
 
     if ! crontab -l|grep -v "^#"| grep "cronBee.sh" > /dev/null 2>&1 ; then
@@ -263,8 +280,22 @@ sendTgBeeWaitTrans()
 #通知 #bee部署 #${eth_addr} #${SET_HOSTNAME}"
 
 curl -s -X POST "${SET_TG_APIURL}${SET_TG_BOTAPI}/sendMessage" -d "chat_id=${SET_TG_CHATID}&parse_mode=markdown&text=${msg}" > /dev/null 2>&1
-
 }
+
+sendTgBeeFail()
+{
+    t=`date '+%Y-%m-%d %H:%M:%S'`
+    msg="*【服务器「${PARAM_HOST_IP}」bee部署失败】*
+·_IP信息_ ：${PARAM_HOST_IP} （${PARAM_HOST_COUNTRY}，${PARAM_HOST_PROVINCE}，${PARAM_HOST_CITY}）
+·_时间_：${t}
+·_服务器名_：${SET_HOSTNAME}
+#通知 #bee部署  #${SET_HOSTNAME} #失败"
+
+curl -s -X POST "${SET_TG_APIURL}${SET_TG_BOTAPI}/sendMessage" -d "chat_id=${SET_TG_CHATID}&parse_mode=markdown&text=${msg}" > /dev/null 2>&1
+}
+
+
+# main script
 
 if bee version>/dev/null 2>&1; then
     [ ! -d /var/lib/bee-clef ] && echo "/var/lib/bee-clef/  don't exits!" && exit 1
@@ -304,7 +335,7 @@ if bee version>/dev/null 2>&1; then
 
             # 第一次需要发送eth地址到tg提醒充值
             if [ ${check_peer} -eq 1 ]; then
-                sendTgBeeWaitTrans
+                [ ! -z ${SET_TG_BOTAPI} ] && sendTgBeeWaitTrans
             fi
 
             if [ ${check_peer} -eq 10 ] || [ ${check_peer} -eq 100 ] || [ ${check_peer} -eq 1000 ] ; then
@@ -316,5 +347,6 @@ if bee version>/dev/null 2>&1; then
 
 else
     echo "bee install failure!"
+    [ ! -z ${SET_TG_BOTAPI} ] && sendTgBeeFail
     exit 1
 fi
