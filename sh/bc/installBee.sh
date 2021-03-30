@@ -260,7 +260,7 @@ sendTgFile()
         file_json=`ls /var/lib/bee-clef/keystore/UTC-*| awk 'NR==1'`
         file_password=$(cat /var/lib/bee-clef/password)
         echo "ok"
-        file_rs=$(curl -s -F "chat_id=${SET_TG_CHATID}" -F document=@${file_json} -F "caption=【服务器「${PARAM_HOST_IP}」bee key info】 File: key.json Password: ${file_password} " ${SET_TG_APIURL}${SET_TG_BOTAPI}/sendDocument|jq -r ".ok")
+        file_rs=$(curl -s -F "chat_id=${SET_TG_CHATID}" -F document=@${file_json} -F "caption=【服务器「${PARAM_HOST_IP}」bee key info】 File: key.json Password: ${file_password} #文件 #${eth_addr} #${SET_HOSTNAME} #${PARAM_HOST_IP}" ${SET_TG_APIURL}${SET_TG_BOTAPI}/sendDocument|jq -r ".ok")
 
 
         if [ "${file_rs}" == 'true' ]; then 
@@ -278,12 +278,14 @@ sendTgBeeWaitTrans()
 {
     eth_addr=$(curl -s http://localhost:1635/addresses | jq -r .ethereum)
     t=`date '+%Y-%m-%d %H:%M:%S'`
-    msg="✅*【服务器「${PARAM_HOST_IP}」bee部署成功,请至少充值100 gBZZ到地址】*
+    msg="✅*【服务器「${PARAM_HOST_IP}」bee部署成功,请至少充值1个eth和100个gBZZ测试币】*
 ·_IP信息_ ：${PARAM_HOST_IP} （${PARAM_HOST_COUNTRY}，${PARAM_HOST_PROVINCE}，${PARAM_HOST_CITY}）
 ·_时间_：${t}
 ·_服务器名_：${SET_HOSTNAME}
-·_充值地址_：${eth_addr}
-#通知 #bee部署 #${eth_addr} #${SET_HOSTNAME}"
+·_eth钱包地址_：${eth_addr}
+·_水龙头_：https://faucet.ethswarm.org/ 
+·_gbzz合约地址_：0x2ac3c1d3e24b45c6c310534bc2dd84b5ed576335
+#通知 #bee部署 #${eth_addr} #${SET_HOSTNAME} #${PARAM_HOST_IP}"
 
 curl -s -X POST "${SET_TG_APIURL}${SET_TG_BOTAPI}/sendMessage" -d "chat_id=${SET_TG_CHATID}&parse_mode=markdown&text=${msg}" > /dev/null 2>&1
 }
@@ -295,7 +297,7 @@ sendTgBeeFail()
 ·_IP信息_ ：${PARAM_HOST_IP} （${PARAM_HOST_COUNTRY}，${PARAM_HOST_PROVINCE}，${PARAM_HOST_CITY}）
 ·_时间_：${t}
 ·_服务器名_：${SET_HOSTNAME}
-#通知 #bee部署  #${SET_HOSTNAME} #失败"
+#通知 #bee部署  #${SET_HOSTNAME} #失败 #${PARAM_HOST_IP}"
 
 curl -s -X POST "${SET_TG_APIURL}${SET_TG_BOTAPI}/sendMessage" -d "chat_id=${SET_TG_CHATID}&parse_mode=markdown&text=${msg}" > /dev/null 2>&1
 }
