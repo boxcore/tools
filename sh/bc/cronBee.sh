@@ -35,6 +35,7 @@ EOF
 GetIP()
 {
     ipinfo_file="${BEE_PATH}/ipinfo.json"
+    [ ! -f ${ipinfo_file} ] && GenIpJSON
     ipinfo_timestamp=`stat -c %Y $ipinfo_file`
     
     cur_timestamp=`date +%s`
