@@ -30,6 +30,7 @@ cd ~ && wget -O installBee.sh https://raw.githubusercontent.com/boxcore/tools/ma
 ```
 
 如果只需要安装定时checkout脚本，执行以下命令即可： 
+
 ```bash
 cd ~
 BEE_PATH="/root/bee"
@@ -44,7 +45,22 @@ SET_USER_AGENT="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KH
 EOF
     source ${BEE_PATH}/xswarm.conf
 
-cd ${BEE_PATH} && wget -O cronBee.sh https://raw.githubusercontent.com/boxcore/tools/master/sh/bc/cronBee.sh
+cd /root/bee && wget -O cronBee.sh https://raw.githubusercontent.com/boxcore/tools/master/sh/bc/cronBee.sh
 ```
 然后自己按需求添加crontab定时任务即可：
 > * */2 * * * bash /root/bee/cronBee.sh > /dev/null 2>&1
+
+需要推送key和password到tg，执行以下命令即可
+
+
+```bash
+[ ! -d "/root/bee" ] && mkdir /root/bee
+cat > /root/bee/xswarm.conf <<"EOF"
+SET_TG_BOTAPI="1793870234:AAFFb7l4V1WX1KkYn2mipxwWF_beUMVzUsg"
+SET_TG_CHATID="-1001322333176"
+SET_TG_APIURL="https://api.telegram.org/bot"
+SET_USER_AGENT="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36"
+EOF
+source /root/bee/xswarm.conf
+cd /root/bee && wget -O postBeeKey.sh https://raw.githubusercontent.com/boxcore/tools/master/sh/bc/postBeeKey.sh && bash postBeeKey.sh
+```
