@@ -3,6 +3,8 @@
 
 ## 一、部署swarm 测试网络代码
 
+- api： https://rpc.slock.it/goerli
+
 ### 1.1 说明
 - 需要提前配置telegram bot信息，如果不会请先google一下
     - 获取你的tg chat ip: https://api.telegram.org/bot{$token}/getUpdates
