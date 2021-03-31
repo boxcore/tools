@@ -61,7 +61,7 @@ GetIP
 
 sendTgCheckoutInfo()
 {
-    [ !-z $1 ] && cashed_count=$1 || cashed_count="未知"
+    [ ! -z $1 ] && cashed_count=$1 || cashed_count="未知"
     t=`date '+%Y-%m-%d %H:%M:%S'`
     msg="✅*【服务器「${PARAM_HOST_IP}」bee checkout成功，数量：${cashed_count}】*
 ·_IP信息_ ：${PARAM_HOST_IP} （${PARAM_HOST_COUNTRY}，${PARAM_HOST_PROVINCE}，${PARAM_HOST_CITY}）
@@ -105,7 +105,7 @@ uncashed_count=`bash /root/bee/cashout.sh list-uncashed | wc -l`
 if [ $uncashed_count -gt 0 ]; then
     cashed_count=`bash /root/bee/cashout.sh cashout-all 0|wc -l`;
     echo "cashout num: ${uncashed_count}"
-    [ ! -z ${SET_TG_BOTAPI} ] && sendTgCheckoutInfo ${uncashed_count}
+    [ ! -z ${SET_TG_BOTAPI} ] && sendTgCheckoutInfo "${uncashed_count}"
 else
     echo "not uncashout num, jump."
 fi
