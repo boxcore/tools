@@ -282,7 +282,7 @@ sendTgBeeWaitTrans()
 ·_IP信息_ ：${PARAM_HOST_IP} （${PARAM_HOST_COUNTRY}，${PARAM_HOST_PROVINCE}，${PARAM_HOST_CITY}）
 ·_时间_：${t}
 ·_服务器名_：${SET_HOSTNAME}
-·_eth钱包地址_：${eth_addr}
+·_eth钱包地址_：${eth_addr}，[流水查询](https://goerli.etherscan.io/address/${eth_addr})
 ·_水龙头_：https://faucet.ethswarm.org/ 
 ·_gbzz合约地址_：0x2ac3c1d3e24b45c6c310534bc2dd84b5ed576335
 #通知 #bee部署 #${eth_addr} #${SET_HOSTNAME} #${PARAM_HOST_IP}"
