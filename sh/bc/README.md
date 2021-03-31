@@ -32,6 +32,8 @@ cd ~ && wget -O installBee.sh https://raw.githubusercontent.com/boxcore/tools/ma
 cd ~
 BEE_PATH="/root/bee"
 [ ! -d "${BEE_PATH}" ] && mkdir ${BEE_PATH}
+
+# 这部分按需要添加
 cat > ${BEE_PATH}/xswarm.conf <<"EOF"
 SET_TG_BOTAPI="1793870234:AAFFb7l4V1WX1KkYn2mipxwWF_beUMVzUsg"
 SET_TG_CHATID="-1001322333176"
