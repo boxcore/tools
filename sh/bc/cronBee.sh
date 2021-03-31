@@ -103,10 +103,9 @@ eth_addr=$(curl -s http://localhost:1635/addresses | jq -r .ethereum)
 export eth_addr
 uncashed_count=`bash /root/bee/cashout.sh list-uncashed | wc -l`
 if [ $uncashed_count -gt 0 ]; then
-    cashed_count=`bash /root/bee/cashout.sh cashout-all|wc -l`;
-    export cashed_count
-    echo "cashout num: ${cashed_count}"
-    [ ! -z ${SET_TG_BOTAPI} ] && sendTgCheckoutInfo ${cashed_count}
+    cashed_count=`bash /root/bee/cashout.sh cashout-all 0|wc -l`;
+    echo "cashout num: ${uncashed_count}"
+    [ ! -z ${SET_TG_BOTAPI} ] && sendTgCheckoutInfo ${uncashed_count}
 else
     echo "not uncashout num, jump."
 fi
