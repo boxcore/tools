@@ -8,7 +8,7 @@
 ### 1.1 说明
 - 需要提前配置telegram bot信息，如果不会请先google一下
     - 获取你的tg chat ip: https://api.telegram.org/bot{$token}/getUpdates
-    - 推荐使用vultr服务器
+    - 推荐使用vultr服务器，[点这里注册新用户充值$10送$100](https://www.vultr.com/?ref=8443528-6G)
     - 脚本中centos7+、debian 10、ubuntu 20中测试通过，其它版本问题请issue反馈
 ### 1.2 自动安装swarm 测试网络
 > 以下提供一些测试用的bot api, 线上项目请提前替换为自己的，请勿滥用。。。
