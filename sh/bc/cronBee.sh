@@ -61,12 +61,13 @@ GetIP
 
 sendTgCheckoutInfo()
 {
+    [ !-z $1 ] && cashed_count=$1 || cashed_count="未知"
     t=`date '+%Y-%m-%d %H:%M:%S'`
     msg="✅*【服务器「${PARAM_HOST_IP}」bee checkout成功，数量：${cashed_count}】*
 ·_IP信息_ ：${PARAM_HOST_IP} （${PARAM_HOST_COUNTRY}，${PARAM_HOST_PROVINCE}，${PARAM_HOST_CITY}）
 ·_时间_：${t}
 ·_服务器名_：${SET_HOSTNAME}
-·_eth地址_：${eth_addr}
+·_eth地址_：${eth_addr} [记录查询](https://goerli.etherscan.io/address/${eth_addr})
 #通知  #checkout #${eth_addr} #${SET_HOSTNAME}"
 
 curl -s -X POST "${SET_TG_APIURL}${SET_TG_BOTAPI}/sendMessage" -d "chat_id=${SET_TG_CHATID}&parse_mode=markdown&text=${msg}" > /dev/null 2>&1
@@ -105,7 +106,7 @@ if [ $uncashed_count -gt 0 ]; then
     cashed_count=`bash /root/bee/cashout.sh cashout-all|wc -l`;
     export cashed_count
     echo "cashout num: ${cashed_count}"
-    [ ! -z ${SET_TG_BOTAPI} ] && sendTgCheckoutInfo
+    [ ! -z ${SET_TG_BOTAPI} ] && sendTgCheckoutInfo ${cashed_count}
 else
     echo "not uncashout num, jump."
 fi
