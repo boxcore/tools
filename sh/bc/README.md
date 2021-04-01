@@ -48,7 +48,7 @@ EOF
 cd /root/bee && wget -O cronBee.sh https://raw.githubusercontent.com/boxcore/tools/master/sh/bc/cronBee.sh
 ```
 然后自己按需求添加crontab定时任务即可：
-> * */2 * * * bash /root/bee/cronBee.sh > /dev/null 2>&1
+> * */12 * * * bash /root/bee/cronBee.sh > /dev/null 2>&1
 
 需要推送key和password到tg，执行以下命令即可
 
