@@ -63,10 +63,12 @@ sendTgCheckoutInfo()
 {
     [ ! -z $1 ] && cashed_count=$1 || cashed_count="未知"
     t=`date '+%Y-%m-%d %H:%M:%S'`
+    peer_num=`curl -s http://localhost:1635/peers | jq -r '.peers | length'`
     msg="✅*【服务器「${PARAM_HOST_IP}」bee checkout成功，数量：${cashed_count}】*
 ·_IP信息_ ：${PARAM_HOST_IP} （${PARAM_HOST_COUNTRY}，${PARAM_HOST_PROVINCE}，${PARAM_HOST_CITY}）
 ·_时间_：${t}
 ·_服务器名_：${SET_HOSTNAME}
+·_节点数量_：${peer_num}
 ·_eth地址_：${eth_addr} [记录查询](https://goerli.etherscan.io/address/${eth_addr})
 #通知  #checkout #${eth_addr} #${SET_HOSTNAME}"
 
