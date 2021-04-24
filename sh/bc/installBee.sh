@@ -240,11 +240,11 @@ addBeeDaemonCron()
     fi
 
     if ! crontab -l > /dev/null  2>&1; then # 需解决crontab空时异常无法添加的情况
-        echo "* */2 * * * bash /root/bee/cronBee.sh > /dev/null" >> conf && crontab conf && rm -f conf
+        echo "* */12 * * * bash /root/bee/cronBee.sh > /dev/null" >> conf && crontab conf && rm -f conf
         echo "add cron cronBee.sh ok"
     else
         if ! crontab -l|grep -v "^#"| grep "cronBee.sh" > /dev/null 2>&1 ; then
-            crontab -l > conf && echo "* */2 * * * bash /root/bee/cronBee.sh > /dev/null" >> conf && crontab conf && rm -f conf
+            crontab -l > conf && echo "* */12 * * * bash /root/bee/cronBee.sh > /dev/null" >> conf && crontab conf && rm -f conf
             echo "add cron cronBee.sh ok"
         else
             echo "already add cron: cronBee.sh"
