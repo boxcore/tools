@@ -1,3 +1,4 @@
 sh/my-rclone.sh
 sh/credentials.json
 sh/gd-email.txt
+.DS_Store
