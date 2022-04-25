@@ -816,22 +816,7 @@ echo "
 # 	exit;
 # fi
 
-InstallBt76()
-{
-	cd /root
-
-	wget http://download.bt.cn/install/update/LinuxPanel-7.6.0.zip
-	unzip LinuxPanel-7.6.0.zip
-	cd panel
-	bash update.sh
-
-	# 移除登录绑定
-	sed -i "s|if (bind_user == 'True') {|if (bind_user == 'REMOVED') {|g" /www/server/panel/BTPanel/static/js/index.js
-	mv /www/server/panel/data/bind.pl /www/server/panel/data/bind.plbak
-}
-
 Install_Main
-InstallBt76
 echo > /www/server/panel/data/bind.pl
 echo -e "=================================================================="
 echo -e "\033[32mCongratulations! Installed successfully!\033[0m"
