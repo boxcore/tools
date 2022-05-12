@@ -3,7 +3,7 @@
 > 备份和修改自 <https://github.com/KANIKIG/Multi-EasyGost/ > 
 > 日期：2022-05-13
 
-##注意
+## 注意
 
 国内github服务如果不能访问，设置hosts如下：
 ```bash
@@ -15,6 +15,16 @@ cat >> /etc/hosts <<"EOF"
 185.199.111.133 raw.githubusercontent.com
 
 EOF
+```
+
+安装：
+```bash
+# 原版
+wget --no-check-certificate -O gost.sh https://raw.githubusercontent.com/KANIKIG/Multi-EasyGost/master/gost.sh && chmod +x gost.sh && ./gost.sh
+
+# 备份
+wget --no-check-certificate -O gost.sh https://raw.githubusercontent.com/boxcore/tools/master/fuckq/EasyGost/gost.sh && chmod +x gost.sh && ./gost.sh
+
 ```
 
 
